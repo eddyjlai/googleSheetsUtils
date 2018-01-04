@@ -1,3 +1,10 @@
+
+function isValidDate(d) {
+  if ( Object.prototype.toString.call(d) !== "[object Date]" )
+    return false;
+  return !isNaN(d.getTime());
+}
+
 function syncCalendarK1() { 
   function convertDateToUTC(date) { return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); }
 
