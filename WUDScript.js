@@ -5,11 +5,11 @@ function isValidDate(d) {
   return !isNaN(d.getTime());
 }
 
-function syncCalendarK1() { 
+function syncCalendar() { 
   function convertDateToUTC(date) { return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); }
 
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("K1"); // Put the tab name here
-  var myCalendar = CalendarApp.getCalendarsByName("DJ HG Calendar")[0]; // Put the Calendar name here
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("INSERT TAB NAME HERE"); // Put the tab name here
+  var myCalendar = CalendarApp.getCalendarsByName("INSERT CALENDAR NAME HERE")[0]; // Put the Calendar name here
   if( sheet == null || myCalendar == null) {return;}
   var firstColumn = "A";
   var lastColumn = "H";
@@ -22,7 +22,7 @@ function syncCalendarK1() {
   var descriptionText3 = "Notes: ";
 
   var columnRange = firstColumn + ":" + lastColumn;
-  var allCellsInWUD = sheet.getRange(columnRange).getValues();
+  var allCells = sheet.getRange(columnRange).getValues();
   
   var numRows = sheet.getLastRow();
   var index = 0;
@@ -43,7 +43,7 @@ function syncCalendarK1() {
   var threeDaysAgo = today.getTime() - 1000*60*60*24*3;
   
   while (index < numRows) {
-    dateOnCell = allCellsInWUD[index][0];
+    dateOnCell = allCells[index][0];
     if(isValidDate(dateOnCell)){
       var tempDate = convertDateToUTC(dateOnCell);
       if (tempDate.getTime() >= threeDaysAgo) {
@@ -55,7 +55,7 @@ function syncCalendarK1() {
   
   while( index < numRows)
   {
-    dateOnCell = allCellsInWUD[index][0];
+    dateOnCell = allCells[index][0];
     if(curDateValue != null || isValidDate(dateOnCell)){
       if(isValidDate(dateOnCell)){
         curDateValue = convertDateToUTC(dateOnCell);
@@ -64,25 +64,25 @@ function syncCalendarK1() {
         }
       }
       
-      eventStart = allCellsInWUD[index][1];
-      eventEnd = allCellsInWUD[index][2];
-      eventName = allCellsInWUD[index][3];      
+      eventStart = allCells[index][1];
+      eventEnd = allCells[index][2];
+      eventName = allCells[index][3];      
       if(eventStart == "") {
         index++;
         continue;
       }
       if (!isValidDate(eventStart)) {
         if (eventStart && eventStart.toString().toLowerCase().equals("all day")) {
-          eventLoc = allCellsInWUD[index][4];
+          eventLoc = allCells[index][4];
           descriptionText = "";
           if (hasExtraColumn1) {
-            descriptionText += descriptionText1 + allCellsInWUD[index][5];
+            descriptionText += descriptionText1 + allCells[index][5];
           }
           if (hasExtraColumn2) {
-            descriptionText += "\n" + descriptionText2 + allCellsInWUD[index][6];
+            descriptionText += "\n" + descriptionText2 + allCells[index][6];
           }
           if (hasExtraColumn3) {
-            descriptionText += "\n" + descriptionText3 + allCellsInWUD[index][7];
+            descriptionText += "\n" + descriptionText3 + allCells[index][7];
           }
           eventEnd = new Date(curDateValue.getUTCFullYear(), curDateValue.getUTCMonth(), curDateValue.getUTCDate()+1, curDateValue.getHours(), 0);
           toCreate.push({name: eventName, start: curDateValue, end: eventEnd, 
@@ -107,16 +107,16 @@ function syncCalendarK1() {
       if (eventEnd.getTime() < eventStart.getTime()) { //hack fix for when the end time is 12AM or something. Add 24 hours to move it to next day.
         eventEnd.setTime(eventEnd.getTime() + 1000*60*60*24);
       }
-      eventLoc = allCellsInWUD[index][4];
+      eventLoc = allCells[index][4];
       descriptionText = "";
       if (hasExtraColumn1) {
-        descriptionText += descriptionText1 + allCellsInWUD[index][5];
+        descriptionText += descriptionText1 + allCells[index][5];
       }
       if (hasExtraColumn2) {
-        descriptionText += "\n" + descriptionText2 + allCellsInWUD[index][6];
+        descriptionText += "\n" + descriptionText2 + allCells[index][6];
       }
       if (hasExtraColumn3) {
-        descriptionText += "\n" + descriptionText3 + allCellsInWUD[index][7];
+        descriptionText += "\n" + descriptionText3 + allCells[index][7];
       }
       toCreate.push({name: eventName, start: eventStart, end: eventEnd, 
                      options: {location: eventLoc, 
