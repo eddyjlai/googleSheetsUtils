@@ -1,5 +1,10 @@
 function syncCalendarScript() { 
   function convertDateToUTC(date) { return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); }
+  function isValidDate(d) {
+    if ( Object.prototype.toString.call(d) !== "[object Date]" )
+      return false;
+    return !isNaN(d.getTime());
+  }
 
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("INSERT TAB NAME HERE"); // Put the tab name here
   var myCalendar = CalendarApp.getCalendarsByName("INSERT CALENDAR NAME HERE")[0]; // Put the Calendar name here
