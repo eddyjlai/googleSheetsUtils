@@ -72,7 +72,7 @@ function syncCalendarScript() {
         continue;
       }
       if (!isValidDate(eventStart)) {
-        if (eventStart && (eventStart.toString().toLowerCase().equals("all day") || eventStart.toString().toLowerCase().equals("allday"))) {
+        if (eventStart && (eventStart.toString().toLowerCase() === "all day" || eventStart.toString().toLowerCase().equals === "allday")) {
           eventLoc = allCellsInWUD[index][4];
           descriptionText = "";
           if (hasExtraColumn1) {
